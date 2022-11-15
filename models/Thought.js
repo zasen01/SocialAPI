@@ -3,7 +3,7 @@ const { Schema, model} = require('mongoose');
 const ReactionSchema = require('./Reaction');
 
 const ThoughtSchema = new Schema({
-  thoughText: {
+  thoughtText: {
     type: String,
     required: 'Thought Content Is Required.', 
     minlength: 1,
