@@ -36,7 +36,53 @@ const userController = {
       User.create(body)
         .then(dbUserData => res.json(dbUserData))
         .catch(err => res.json(err));
-    }
+    },
+    addFriend(req,res){
+        User.findOneAndUpdate(
+            {_id:req.params.userId},
+            {$addToSet:{friends:req.params.friendId}},
+            {new:true}
+        ).then(updatedUser => {
+            if(!updatedUser)
+            {res.json({msg:'User not Found'})}
+            res.json({msg:"Added Friend ", data:updatedUser})
+
+        })
+        .catch(err => {
+            console.log(err)
+            res.sendStatus(400);
+        })
+    },
+    removeFriend(req,res){
+        User.findOneAndUpdate(
+            {_id:req.params.userId},
+            {$pull:{friends:req.params.friendId}},
+            {new:true}
+        ).then(updatedUser => {
+            if(!updatedUser)
+            {res.json({msg:'User not Found'})}
+            res.json({msg:"Removed Friend ", data:updatedUser})
+
+        })
+        .catch(err => {
+            console.log(err)
+            res.sendStatus(400);
+        })
+    },
+    updateUser({ body,params }, res) {
+      User.findOneAndUpdate(
+        {
+          _id:params.id,
+        },
+        {
+          $set:body
+        }
+
+      )
+        .then(dbUserData => res.json(dbUserData))
+        .catch(err => res.json(err));
+    },
+    
 
   };
 
